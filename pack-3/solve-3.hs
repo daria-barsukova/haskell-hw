@@ -1,7 +1,10 @@
 fizzbuzz = [if x `mod` 15 == 0 then "FizzBuzz" else if x `mod` 3  == 0 then "Fizz" else if x `mod` 5  == 0 then "Buzz" else show x | x <- [1..]]
 
+dotsInCircle :: (Double, Double) -> Double -> [(Double, Double)] -> [(Double, Double)] 
+dotsInCircle (x, y) r array = [(x1, y1) | (x1, y1) <- array, (x1-x)^2 + (y1-y)^2 <= (r)^2]
+
 setAnd :: [Int] -> [Int] -> [Int] 
-setAnd(x:xs) (y:ys) = [ x | x <- (x:xs), y <- (y:ys), x==y]
+setAnd (x:xs) (y:ys) = [ x | x <- (x:xs), y <- (y:ys), x==y]
 
 summ :: Int -> Int
 summ 0 = 0
@@ -13,6 +16,15 @@ count x | x < 10 = 1
 
 task :: Integer -> Bool
 task x = if x `elem` take 8 [2^n | n <- [1,2..]] then True else False
+
+sequenceByPred :: (Int -> Int) -> Int -> [Int]
+sequenceByPred f start = start : sequenceByPred f second
+      where second = f start
+
+sequenceByPred2 :: (Int -> Int -> Int) -> Int -> Int -> [Int]
+sequenceByPred2 f start1 start2 = start1 : start2 : sequenceByPred2 f third fourth
+      where third = f start1 start2
+            fourth = f start2 third
 
 count' :: Int -> Int
 count' x = coll 0 x
