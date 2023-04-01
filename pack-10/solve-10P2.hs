@@ -91,19 +91,14 @@ maternal_grandfather sheep = mother sheep >>= father
 maternal_grandfather2:: Sheep -> Maybe Sheep
 maternal_grandfather2 sheep = maternal_grandfather sheep >>= father
 
-parents:: Sheep -> [Maybe Sheep]
-parents sheep = [mother sheep, father sheep]
+parents:: Sheep -> [Sheep]
+parents s = (maybeToList (mother s)) ++ (maybeToList (father s))
 
-grandparents:: Sheep -> [Maybe Sheep]
-grandparents sheep | father sheep == Nothing && mother sheep == Nothing = [Nothing, Nothing, Nothing, Nothing]
-                   | father sheep == Nothing = parents (fromJust $ mother sheep) ++ [Nothing, Nothing]
-                   | mother sheep == Nothing = parents (fromJust $ father sheep) ++ [Nothing, Nothing]
-                   | otherwise = parents (fromJust $ mother sheep) ++ parents (fromJust $ father sheep)
+grandparents:: Sheep -> [Sheep]
+grandparents s = (parents s) >>= parents
 
 isAnOrphan:: Sheep -> Bool
-isAnOrphan sheep = if mother sheep == Nothing && father sheep == Nothing
-                   then True
-                   else False
+isAnOrphan sheep = mother sheep == Nothing && father sheep == Nothing
 
 selected_barans = ["i3", "i5", "i6", "i9", "i12"]
 
