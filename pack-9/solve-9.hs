@@ -1,5 +1,4 @@
 import Prelude hiding (head, tail, maximum)
-import Data.Maybe
 import Control.Monad.State
 
 type GreekData = [(String, [Integer])]
@@ -51,8 +50,12 @@ tailMay (x:xs) = maximumMay xs
 
 
 queryGreek :: GreekData -> String -> Maybe Double
-queryGreek gdata value = helper (fromJust (lookup value gdata))
-    where helper xs = divMay (fromIntegral (fromJust (tailMay xs))) (fromIntegral (fromJust (headMay xs)))
+queryGreek gdata value = helper (fromJustforLst (lookup value gdata))
+    where helper xs = divMay (fromIntegral (fromJust' (tailMay xs))) (fromIntegral (fromJust' (headMay xs)))
+          fromJust' Nothing  = 0
+          fromJust' (Just x) = x
+          fromJustforLst Nothing  = []
+          fromJustforLst (Just xs) = xs
 
 -- queryGreek greekDataA "alpha" == Just 2.0
 
